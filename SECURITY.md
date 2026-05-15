@@ -2,20 +2,41 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+claudeclaw-container is released as a single rolling Docker image
+(`paulmeier/claudeclaw-container:latest`). Only the most recent published
+release is supported with security fixes. Tagged releases are cut from `main`
+via semantic-release; pin to a specific tag if you need reproducibility, but be
+aware that older tags will not receive backports.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version  | Supported          |
+| -------- | ------------------ |
+| `latest` | :white_check_mark: |
+| Older    | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+**Please do not open a public GitHub issue for security vulnerabilities.**
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Report vulnerabilities privately via GitHub's
+[Private Vulnerability Reporting](https://github.com/paulmeier/claudeclaw-container/security/advisories/new):
+
+1. Go to the repository's **Security** tab.
+2. Click **Report a vulnerability**.
+3. Fill out the advisory form with as much detail as you can — affected
+   versions, reproduction steps, impact, and any suggested mitigation.
+
+If you cannot use GitHub's advisory flow, email **longish.physic0h@icloud.com**
+with the subject line `[claudeclaw-container] Security report` and the same
+information.
+
+### What to expect
+
+- **Acknowledgement:** within 5 business days.
+- **Initial assessment:** within 14 days, including whether the report is
+  accepted, declined, or needs more information.
+- **Fix and disclosure:** for accepted reports, we aim to ship a patched
+  release and publish a coordinated GitHub Security Advisory within 90 days
+  of the original report. We will keep you updated throughout.
+
+If a report is declined, we will explain why. If accepted, we will credit you
+in the published advisory unless you request otherwise.
