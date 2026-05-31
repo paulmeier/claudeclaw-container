@@ -5,6 +5,14 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.11.0](https://github.com/paulmeier/claudeclaw-container/compare/v1.10.0...v1.11.0) (2026-05-31)
+
+
+### Features
+
+* add mirror-to-plus automation for vanilla→plus parity ([5c9bdd7](https://github.com/paulmeier/claudeclaw-container/commit/5c9bdd728ca6ae685e5f73ce311234bc962bcf46))
+* auto-mirror shared changes to claudeclaw-plus-container ([1e83161](https://github.com/paulmeier/claudeclaw-container/commit/1e831611a4310c826982ff16d70914631ebb520f))
+
 ## [1.10.0](https://github.com/paulmeier/claudeclaw-container/compare/v1.9.1...v1.10.0) (2026-05-31)
 
 
