@@ -5,6 +5,13 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.13.0](https://github.com/paulmeier/claudeclaw-container/compare/v1.12.0...v1.13.0) (2026-06-08)
+
+
+### Features
+
+* bump claudeclaw to 1f9f001 ([#31](https://github.com/paulmeier/claudeclaw-container/issues/31)) ([0d16b21](https://github.com/paulmeier/claudeclaw-container/commit/0d16b216c4c3b22c2ef3150a21dcd795f55c1a08))
+
 ## [1.12.0](https://github.com/paulmeier/claudeclaw-container/compare/v1.11.0...v1.12.0) (2026-05-31)
 
 
