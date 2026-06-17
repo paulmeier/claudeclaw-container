@@ -5,6 +5,13 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.13.1](https://github.com/paulmeier/claudeclaw-container/compare/v1.13.0...v1.13.1) (2026-06-17)
+
+
+### Bug Fixes
+
+* **readme:** use static MIT license badge ([#33](https://github.com/paulmeier/claudeclaw-container/issues/33)) ([f9107ab](https://github.com/paulmeier/claudeclaw-container/commit/f9107ab1530b8c8d7def2d29b790df13eccd448f))
+
 ## [1.13.0](https://github.com/paulmeier/claudeclaw-container/compare/v1.12.0...v1.13.0) (2026-06-08)
 
 
