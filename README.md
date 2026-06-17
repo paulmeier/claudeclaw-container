@@ -11,7 +11,7 @@
 [![Lint](https://github.com/paulmeier/claudeclaw-container/actions/workflows/lint.yml/badge.svg)](https://github.com/paulmeier/claudeclaw-container/actions/workflows/lint.yml)
 [![Security scan](https://github.com/paulmeier/claudeclaw-container/actions/workflows/security.yml/badge.svg)](https://github.com/paulmeier/claudeclaw-container/actions/workflows/security.yml)
 [![Container](https://img.shields.io/badge/ghcr.io-paulmeier%2Fclaudeclaw--container-2496ED?logo=docker&logoColor=white)](https://github.com/paulmeier/claudeclaw-container/pkgs/container/claudeclaw-container)
-[![License](https://img.shields.io/github/license/paulmeier/claudeclaw-container)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Docker container for [claudeclaw](https://github.com/moazbuilds/claudeclaw) — a daemon that extends Claude Code into a personal assistant with Telegram, Discord, and Slack bridges, scheduled jobs, voice transcription, and a web dashboard.
 
