@@ -5,6 +5,13 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.15.1](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.0...v1.15.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* rebuild image with latest Claude Code CLI and base image ([#39](https://github.com/paulmeier/claudeclaw-container/issues/39)) ([3c24f0f](https://github.com/paulmeier/claudeclaw-container/commit/3c24f0f3890f4648e7a0297d4e7b45206cca09da))
+
 ## [1.15.0](https://github.com/paulmeier/claudeclaw-container/compare/v1.14.0...v1.15.0) (2026-07-20)
 
 
