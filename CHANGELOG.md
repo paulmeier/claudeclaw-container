@@ -5,6 +5,13 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.15.2](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.1...v1.15.2) (2026-10-30)
+
+
+### Bug Fixes
+
+* remove stale daemon.pid on container start ([#41](https://github.com/paulmeier/claudeclaw-container/issues/41)) ([f7a41ab](https://github.com/paulmeier/claudeclaw-container/commit/f7a41abf43d02a6579fdb6e9e6ed24c74687a13c))
+
 ## [1.15.1](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.0...v1.15.1) (2026-10-30)
 
 
