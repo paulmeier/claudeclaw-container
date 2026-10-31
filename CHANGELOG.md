@@ -5,6 +5,13 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.15.3](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.2...v1.15.3) (2026-10-31)
+
+
+### Bug Fixes
+
+* back up the real compose volume, gate auto-merges on a smoke test ([#43](https://github.com/paulmeier/claudeclaw-container/issues/43)) ([be99df6](https://github.com/paulmeier/claudeclaw-container/commit/be99df62245f1cde770dd54ac30d4a1700ee1e38))
+
 ## [1.15.2](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.1...v1.15.2) (2026-10-30)
 
 
