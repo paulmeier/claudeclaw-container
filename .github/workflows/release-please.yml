@@ -1,8 +1,8 @@
 name: Release Please
 
 # Opens (and keeps updating) a release PR whenever a conventional-commit
-# `feat:` or `fix:` lands on main, then immediately squash-merges it using
-# the RELEASE_BOT_TOKEN PAT. The merge — authored by the PAT, not the default
+# `feat:` or `fix:` lands on main, then enables auto-merge (squash) on it using
+# the RELEASE_BOT_TOKEN PAT, so it merges once required checks pass. The merge — authored by the PAT, not the default
 # GITHUB_TOKEN — triggers a second run of this workflow on push:main, which
 # detects `release_created=true` and dispatches docker-publish.yml at the tag.
 #
@@ -28,13 +28,16 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
+      # --auto: GitHub merges once main's required checks (lint, security,
+      # smoke) pass, rather than immediately. Needs "Allow auto-merge" enabled
+      # in the repo settings.
       - name: Auto-merge release PR
         if: steps.release.outputs.pr
         env:
           GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
         run: |
           pr_number=$(echo '${{ steps.release.outputs.pr }}' | jq -r .number)
-          gh pr merge "$pr_number" --repo ${{ github.repository }} --squash --delete-branch
+          gh pr merge "$pr_number" --repo ${{ github.repository }} --auto --squash --delete-branch
 
       - name: Trigger docker-publish for the new release
         if: steps.release.outputs.release_created == 'true'

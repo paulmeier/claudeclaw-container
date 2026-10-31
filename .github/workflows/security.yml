@@ -23,9 +23,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Scan the same upstream SHA that docker-publish ships, not whatever
+      # master is at scan time.
+      - name: Read pinned upstream SHA
+        id: pin
+        run: echo "ref=$(tr -d '[:space:]' < .upstream-ref)" >> "$GITHUB_OUTPUT"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # ignore-error: concurrent push + pull_request runs race to write the
+      # same GHA cache entries ("failed to reserve cache"); a cache-write miss
+      # shouldn't fail the scan.
       - name: Build image for scanning
         uses: docker/build-push-action@v6
         with:
@@ -33,8 +42,10 @@ jobs:
           push: false
           load: true
           tags: claudeclaw:scan
+          build-args: |
+            CLAUDECLAW_REF=${{ steps.pin.outputs.ref }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=max,ignore-error=true
           provenance: false
 
       - name: Run Trivy vulnerability scanner

@@ -1,0 +1,73 @@
+name: Smoke test
+
+# Builds the image at the pinned upstream SHA, boots it on a fresh volume, and
+# waits for the Dockerfile HEALTHCHECK (upstream's /api/health) to report
+# healthy. Required on main, so the automated upstream-sync and release-please
+# PRs can't ship an image that doesn't start.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  smoke:
+    name: Boot container and wait for healthy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read pinned upstream SHA
+        id: pin
+        run: echo "ref=$(tr -d '[:space:]' < .upstream-ref)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: claudeclaw:smoke
+          build-args: |
+            CLAUDECLAW_REF=${{ steps.pin.outputs.ref }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,ignore-error=true
+          provenance: false
+
+      - name: Toolchain is on PATH
+        run: |
+          docker run --rm --entrypoint bash claudeclaw:smoke -c \
+            'set -e; claude --version; bun --version; node --version; python3 --version; uv --version; pnpm --version'
+
+      - name: Start container
+        run: docker run -d --name smoke -p 4632:4632 claudeclaw:smoke
+
+      - name: Wait for healthy
+        run: |
+          for _ in $(seq 1 60); do
+            status=$(docker inspect -f '{{.State.Health.Status}}' smoke 2>/dev/null || echo missing)
+            running=$(docker inspect -f '{{.State.Running}}' smoke 2>/dev/null || echo false)
+            echo "health=$status running=$running"
+            [ "$status" = healthy ] && exit 0
+            [ "$running" = true ] || { echo "Container exited" >&2; exit 1; }
+            sleep 5
+          done
+          echo "Timed out waiting for healthy" >&2
+          exit 1
+
+      - name: Health endpoint reachable from the host
+        run: curl -fsS http://127.0.0.1:4632/api/health
+
+      - name: Container logs
+        if: always()
+        run: docker logs smoke 2>&1 | tail -100

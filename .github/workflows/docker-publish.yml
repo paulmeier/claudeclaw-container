@@ -71,5 +71,5 @@ jobs:
           build-args: |
             CLAUDECLAW_REF=${{ steps.pin.outputs.ref }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=max,ignore-error=true
           provenance: false

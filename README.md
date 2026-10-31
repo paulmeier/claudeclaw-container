@@ -310,17 +310,9 @@ Everything is stored in the `claudeclaw-data` named volume at `/root/.claude/`:
 | `uv-cache/`                | UV download cache; `uvx` environments   |
 | `uv-python/`               | UV-managed Python installations         |
 
-To back up or inspect the volume:
+> **Volume name:** Docker Compose prefixes volumes with the project name (the directory name by default), so under Compose the volume is actually called e.g. `claudeclaw-container_claudeclaw-data`. Only the plain `docker run -v claudeclaw-data:...` setup uses the bare name. Find yours with `docker volume ls --filter label=com.docker.compose.volume=claudeclaw-data`.
 
-```bash
-# Dump to a tar archive
-docker run --rm -v claudeclaw-data:/data -v $(pwd):/backup alpine \
-  tar czf /backup/claudeclaw-backup.tar.gz -C /data .
-
-# Restore
-docker run --rm -v claudeclaw-data:/data -v $(pwd):/backup alpine \
-  tar xzf /backup/claudeclaw-backup.tar.gz -C /data
-```
+To back up the volume, use [`backup.sh`](#backups) — it resolves the volume name for you.
 
 ---
 
@@ -658,7 +650,7 @@ Archives are written to `./backups/` by default. Override with `CLAUDECLAW_BACKU
 CLAUDECLAW_BACKUP_DIR=~/Backups/claudeclaw ./backup.sh
 ```
 
-The script accesses the volume via a temporary Docker container, so it is safe to run while the daemon is running.
+The script accesses the volume via a temporary Docker container, so it is safe to run while the daemon is running. It finds the Compose volume by label (Compose names it `<project>_claudeclaw-data`), falls back to a bare `claudeclaw-data` volume, and refuses to run if neither exists rather than archiving an empty volume. Set `CLAUDECLAW_VOLUME=<name>` to pick one explicitly.
 
 ### From inside the container
 
@@ -691,10 +683,13 @@ CLAUDECLAW_BACKUP_DIR=/backup /backup.sh
 ### Restore
 
 ```bash
+VOLUME=$(docker volume ls -q --filter label=com.docker.compose.volume=claudeclaw-data)
+echo "$VOLUME"   # e.g. claudeclaw-container_claudeclaw-data — check before removing
 docker compose down
-docker volume rm claudeclaw-data
+docker volume rm "$VOLUME"
+docker compose create   # recreates the volume with the labels Compose expects
 docker run --rm \
-  -v claudeclaw-data:/data \
+  -v "$VOLUME":/data \
   -v /path/to/backups:/backup:ro \
   alpine tar xzf /backup/claudeclaw-2026-05-09-143022.tar.gz -C /data
 docker compose up -d
