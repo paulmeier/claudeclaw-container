@@ -36,6 +36,7 @@ Docker container for [claudeclaw](https://github.com/moazbuilds/claudeclaw) — 
 
 - [Docker](https://docs.docker.com/get-docker/) with Compose
 - A Claude Code subscription (claude.ai/code) — no API key required
+- On x86_64, a CPU with **AVX2** (Intel Haswell / AMD Excavator, 2013–2015, or newer). Claude Code ships no build for older CPUs; on them the container stops at startup with an explanation. arm64 hosts are unaffected.
 - Optional: a Telegram bot token, Discord bot token, or Slack app token for messaging
 
 ---
@@ -277,6 +278,26 @@ docker compose down && docker compose up -d
 ## Web dashboard
 
 Available at `http://localhost:4632` when `web.enabled` is `true`. Shows active jobs, logs, and session status. To access it from a remote host, either expose the port via a reverse proxy or change the port mapping in `docker-compose.yml`.
+
+### Access token
+
+The dashboard asks for an access token. claudeclaw generates it on first start, keeps it in the volume (so it stays the same across restarts), and logs it as `Web UI: http://0.0.0.0:4632/?token=…`. Print it with:
+
+```bash
+docker compose exec claudeclaw cat /root/.claude/claudeclaw/web.token
+```
+
+The dashboard only remembers the token for the current browser tab, so it asks again in each new one. To skip the prompt, **bookmark the URL with the token in it** — `http://<your-server>:4632/?token=<token>` logs straight in.
+
+To choose the token yourself (for example to set it from a template or secret store), set `CLAUDECLAW_WEB_TOKEN`; the entrypoint writes it to `web.token` on every start:
+
+```yaml
+# docker-compose.yml
+    environment:
+      - CLAUDECLAW_WEB_TOKEN=${CLAUDECLAW_WEB_TOKEN}   # e.g. from `openssl rand -hex 32`
+```
+
+Use URL-safe characters (letters, digits, `-`, `_`), since the token goes in the bookmark URL. Unset it to keep the current token; delete `web.token` and restart to generate a new random one.
 
 ---
 
@@ -771,6 +792,12 @@ Check logs: `docker compose logs`. Usually a missing or malformed `settings.json
 
 **Web dashboard not loading**
 Ensure `web.enabled` is `true` and `web.host` is `"0.0.0.0"` in settings. The entrypoint auto-corrects `127.0.0.1` → `0.0.0.0`, but other values are left as-is.
+
+**Dashboard asks for a token every time**
+See [Access token](#access-token): bookmark `http://<your-server>:4632/?token=<token>`.
+
+**Container restart-loops with exit code 132 / "Illegal instruction"**
+The CPU lacks AVX2, which Claude Code requires on x86_64 (see [Prerequisites](#prerequisites)). The logs say so explicitly: `This CPU does not support AVX2`. There is no workaround short of newer hardware.
 
 **Bot not responding to messages**
 
