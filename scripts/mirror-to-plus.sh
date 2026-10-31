@@ -173,4 +173,3 @@ fi
 git push -q -u origin "$branch"
 gh pr create --repo "$PLUS_REPO" --base main --head "$branch" \
   --title "$title" --body "$body"
-EOF

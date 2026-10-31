@@ -1,11 +1,14 @@
 name: Upstream sync
 
 # Once a week, check whether moazbuilds/claudeclaw's master has advanced past
-# the SHA recorded in .upstream-ref. If so, open a `feat:` bump PR and
-# immediately squash-merge it. The merge is authored by the RELEASE_BOT_TOKEN
-# PAT (NOT the default GITHUB_TOKEN), so the push to main triggers release-please,
-# which in turn auto-merges its release PR and dispatches docker-publish.
-# End-to-end: cron -> ~10-15 min later, image is on GHCR. No human in the loop.
+# the SHA recorded in .upstream-ref. If so, open a `feat:` bump PR and enable
+# auto-merge (squash) on it, so it lands only once main's required checks
+# (lint, security, smoke) pass against the new upstream SHA. Auto-merge is
+# enabled by the RELEASE_BOT_TOKEN PAT (NOT the default GITHUB_TOKEN), so the
+# resulting push to main triggers release-please, which in turn auto-merges its
+# release PR and dispatches docker-publish.
+# End-to-end: cron -> ~20-30 min later, image is on GHCR. A failing check
+# leaves the PR open for a human instead of shipping.
 
 on:
   schedule:
@@ -88,6 +91,6 @@ jobs:
 
           ${compare_line}
 
-          Squash-merged immediately by the release-bot to trigger release-please."
+          Auto-merged by the release-bot once required checks pass, which triggers release-please."
 
-          gh pr merge "$branch" --squash --delete-branch
+          gh pr merge "$branch" --auto --squash --delete-branch
