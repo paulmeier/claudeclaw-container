@@ -5,6 +5,13 @@
 
 * persist npm global installs and npx cache in the appdata volume ([1786d18](https://github.com/paulmeier/claudeclaw-container/commit/1786d18735738715a901f2acd795c866559fd936))
 
+## [1.15.4](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.3...v1.15.4) (2026-10-31)
+
+
+### Bug Fixes
+
+* explain AVX2 crashes and allow pinning the dashboard token ([#46](https://github.com/paulmeier/claudeclaw-container/issues/46)) ([254c8c8](https://github.com/paulmeier/claudeclaw-container/commit/254c8c8c824f500c25a3836235f1a079a3fce24e))
+
 ## [1.15.3](https://github.com/paulmeier/claudeclaw-container/compare/v1.15.2...v1.15.3) (2026-10-31)
 
 
